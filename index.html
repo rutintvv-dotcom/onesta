@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Onesta Artist Identity</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Helvetica', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200vh;
+            
+            transition: background 0.5s ease;
+            background-size: cover;      /* 사진이 화면에 꽉 차게 */
+            background-position: center; /* 사진 중앙 정렬 */
+            background-repeat: no-repeat;
+        }
+
+        /* 사진 위에 글자가 잘 보이도록 하는 어두운 오버레이 */
+        .overlay {
+            position: absolute;
+            top: -20; left: 0; width: 100%; height: 60%;
+            background: rgba(0, 0, 0, 0.4); /* 40% 투명도 */
+            z-index: -1;
+        }
+
+        h2 { margin-bottom: 50px; font-weight: 200; letter-spacing: 5px; z-index: 1; }
+
+        .palette-container {
+            display: flex;
+            gap: 20px;
+            z-index: 1;
+        }
+
+        .pantone-chip {
+            width: 150px;
+            height: 220px;
+            background: #fff;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .pantone-chip:hover {
+            transform: translateY(-20px) scale(1.05);
+        }
+
+        .color-area { width: 100%; height: 75%; transition: 0.3s; }
+
+        /* 김용빈 칩 내부에 사진 미리보기 */
+        .color-1 { 
+            background-image: url('kim.jpg'); /* 파일명 확인 필수! */
+            background-size: cover;
+            background-position: center calc(10%+20px)
+        }
+        .color-2 { 
+            background-image: url('yum.jpg');
+            background-size: cover;
+            background-position: center;
+         }
+        .color-3 { 
+            background-image: url('in.jpg');
+            background-size: cover;
+            background-position: 45% 60%
+            background-repeat: no-repeat;
+         }
+        .color-4 { background-image: url('song.jpg');
+            background-size: cover;
+            background-position: 45% 60%
+            background-repeat: no-repeat;
+         }
+        .text-area {
+            padding-top: 15px;
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .artist-name { font-size: 14px; margin-top: 5px; color: #ffff; }
+
+        p { margin-top: 40px; color: rgba(255,255,255,0.5); z-index: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div> <h2>THEY ARE ARTISTS WITH ONESTARCOMPANY</h2>
+
+    <div class="palette-container">
+        <div class="pantone-chip" onclick="changeBg('image', 'kim.jpg')">
+            <div class="color-area color-1"></div>
+            <div class="text-area">
+            Kim Yong Bin<br> 8109-2991 
+                <div class="artist-name">Kim Yong Bin</div>
+            </div>
+        </div>
+
+        <div class="pantone-chip" onclick="changeBg('image', 'yum.jpg', 'center 200%')">
+            <div class="color-area color-2"></div>
+            <div class="text-area">
+       Yuri Yeom<br>9170-3991  
+                <div class="artist-name">Yuri Yeom</div>
+            </div>
+        </div>
+
+        <div class="pantone-chip" onclick="changeBg('image', 'in.jpg')">
+            <div class="color-area color-3"></div>
+            <div class="text-area">
+       In Hyeok Hwang<br>5101-8991        
+                <div class="artist-name">In Hyeok Hwang</div>
+            </div>
+        </div>
+
+        <div class="pantone-chip" onclick="changeBg('image', 'song.jpg')">
+            <div class="color-area color-4"></div>
+            <div class="text-area">
+        Ja Young Song <br> 9060-7991    
+                <div class="artist-name">Ja Young Song</div>
+            </div>
+        </div>
+    </div>
+
+    <p>"24 Hakdong-ro 31-gil, Gangnam-gu, Seoul"</p>
+
+    <script>
+        function changeBg(type, value) {
+            if (type === 'image') {
+                document.body.style.backgroundImage = "url('" + value + "')";
+            } else {
+                document.body.style.backgroundImage = "none";
+                document.body.style.backgroundColor = value;
+            }
+        }
+    </script>
+
+</body>
+</html>
