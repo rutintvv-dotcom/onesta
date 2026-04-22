@@ -2,142 +2,132 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Onesta Artist Identity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onesta Company | Official</title>
     <style>
-        body {
-            margin: 0;
-            background-color: #050505;
-            color: #fff;
-            font-family: 'Helvetica', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            
-            transition: background 0.5s ease;
-            background-size: cover;      /* 사진이 화면에 꽉 차게 */
-            background-position: center; /* 사진 중앙 정렬 */
-            background-repeat: no-repeat;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #fdfdfd;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; font-family: 'Helvetica', sans-serif;
         }
 
-        /* 사진 위에 글자가 잘 보이도록 하는 어두운 오버레이 */
-        .overlay {
+        .paper-texture {
             position: absolute;
-            top: -20; left: 0; width: 100%; height: 60%;
-            background: rgba(0, 0, 0, 0.4); /* 40% 투명도 */
-            z-index: -1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            opacity: 0.6; pointer-events: none; z-index: 1;
         }
 
-        h2 { margin-bottom: 50px; font-weight: 200; letter-spacing: 5px; z-index: 1; }
-
-        .palette-container {
-            display: flex;
-            gap: 20px;
-            z-index: 1;
+        .ink-wrapper {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            pointer-events: none;
+            z-index: 2;
+            filter: url(#ink-filter);
         }
 
-        .pantone-chip {
-            width: 150px;
-            height: 220px;
-            background: #fff;
-            padding: 10px;
+        .ink-blob {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(0, 0, 0, 0.5) 0%, 
+                rgba(20, 20, 30, 0.25) 40%, 
+                transparent 80%);
+            opacity: 0;
+        }
+
+        /* 4군데 확산 애니메이션 */
+        .blob-1 { top: 45%; left: 45%; animation: expand-up-left 10s cubic-bezier(0.2, 0.4, 0.4, 0.95) forwards; }
+        .blob-2 { top: 50%; left: 50%; animation: expand-down 11s cubic-bezier(0.2, 0.4, 0.4, 0.95) 0.5s forwards; }
+        .blob-3 { top: 48%; left: 52%; animation: expand-right 12s cubic-bezier(0.2, 0.4, 0.4, 0.95) 1.2s forwards; }
+        
+        /* blob-4: 왼쪽 위에서 추가로 번짐 (절반 크기) */
+        .blob-4 { 
+            top: 20%; left: 20%; 
+            animation: expand-small 9s cubic-bezier(0.2, 0.4, 0.4, 0.95) 0.8s forwards; 
+        }
+
+        @keyframes expand-up-left {
+            0% { width: 0; height: 0; opacity: 0; transform: translate(0, 0) scale(0.3); }
+            30% { opacity: 0.7; }
+            100% { width: 180vw; height: 180vw; opacity: 0.1; transform: translate(-20%, -20%) scale(1.5); }
+        }
+
+        @keyframes expand-down {
+            0% { width: 0; height: 0; opacity: 0; transform: translate(0, 0) scale(0.3); }
+            30% { opacity: 0.6; }
+            100% { width: 200vw; height: 200vw; opacity: 0.08; transform: translate(0, 25%) scale(1.6); }
+        }
+
+        @keyframes expand-right {
+            0% { width: 0; height: 0; opacity: 0; transform: translate(0, 0) scale(0.3); }
+            30% { opacity: 0.5; }
+            100% { width: 170vw; height: 170vw; opacity: 0.1; transform: translate(25%, 10%) scale(1.4); }
+        }
+
+        /* 왼쪽 위 작은 번짐 전용 애니메이션 */
+        @keyframes expand-small {
+            0% { width: 0; height: 0; opacity: 0; transform: scale(0.2); }
+            30% { opacity: 0.4; }
+            100% { width: 80vw; height: 80vw; opacity: 0.07; transform: scale(1); }
+        }
+
+        .brand-logo {
+            position: relative;
+            z-index: 10;
+            text-decoration: none;
+            color: #111;
+            font-size: 2.5rem;
+            font-weight: 200;
+            letter-spacing: 1.5rem;
+            text-transform: uppercase;
+            opacity: 0;
+            filter: blur(8px);
+            transform: scale(0.8) translateZ(-150px);
+            animation: text-zoom 6s ease-out 2s forwards;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.6s ease;
         }
 
-        .pantone-chip:hover {
-            transform: translateY(-20px) scale(1.05);
+        .brand-logo:hover { letter-spacing: 1.8rem; color: #444; }
+
+        @keyframes text-zoom {
+            0% { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
         }
 
-        .color-area { width: 100%; height: 75%; transition: 0.3s; }
-
-        /* 김용빈 칩 내부에 사진 미리보기 */
-        .color-1 { 
-            background-image: url('kim.jpg'); /* 파일명 확인 필수! */
-            background-size: cover;
-            background-position: center calc(10%+20px)
-        }
-        .color-2 { 
-            background-image: url('yum.jpg');
-            background-size: cover;
-            background-position: center;
-         }
-        .color-3 { 
-            background-image: url('in.jpg');
-            background-size: cover;
-            background-position: 45% 60%
-            background-repeat: no-repeat;
-         }
-        .color-4 { background-image: url('song.jpg');
-            background-size: cover;
-            background-position: 45% 60%
-            background-repeat: no-repeat;
-         }
-        .text-area {
-            padding-top: 15px;
-            color: #000;
-            font-size: 11px;
-            font-weight: bold;
-            line-height: 1.2;
+        .click-hint {
+            position: absolute;
+            bottom: 50px;
+            font-size: 10px; color: #bbb; letter-spacing: 5px;
+            opacity: 0; animation: fade-in 2s ease forwards 5s; z-index: 10;
         }
 
-        .artist-name { font-size: 14px; margin-top: 5px; color: #ffff; }
-
-        p { margin-top: 40px; color: rgba(255,255,255,0.5); z-index: 1; }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div class="overlay"></div> <h2>ARTISTS WITH ONESTARCOMPANY</h2>
+    <svg style="position: absolute; width: 0; height: 0;">
+        <filter id="ink-filter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="100" />
+        </filter>
+    </svg>
 
-    <div class="palette-container">
-        <div class="pantone-chip" onclick="changeBg('image', 'kim.jpg')">
-            <div class="color-area color-1"></div>
-            <div class="text-area">
-            Kim Yong Bin<br> 8109-2991 
-                <div class="artist-name">Kim Yong Bin</div>
-            </div>
-        </div>
-
-        <div class="pantone-chip" onclick="changeBg('image', 'yum.jpg', 'center 200%')">
-            <div class="color-area color-2"></div>
-            <div class="text-area">
-       Yuri Yeom<br>9170-3991  
-                <div class="artist-name">Yuri Yeom</div>
-            </div>
-        </div>
-
-        <div class="pantone-chip" onclick="changeBg('image', 'in.jpg')">
-            <div class="color-area color-3"></div>
-            <div class="text-area">
-       In Hyeok Hwang<br>5101-8991        
-                <div class="artist-name">In Hyeok Hwang</div>
-            </div>
-        </div>
-
-        <div class="pantone-chip" onclick="changeBg('image', 'song.jpg')">
-            <div class="color-area color-4"></div>
-            <div class="text-area">
-        Ja Young Song <br> 9060-7991    
-                <div class="artist-name">Ja Young Song</div>
-            </div>
-        </div>
+    <div class="paper-texture"></div>
+    
+    <div class="ink-wrapper">
+        <div class="ink-blob blob-1"></div>
+        <div class="ink-blob blob-2"></div>
+        <div class="ink-blob blob-3"></div>
+        <div class="ink-blob blob-4"></div>
     </div>
 
-    <p>"24 Hakdong-ro 31-gil, Gangnam-gu, Seoul"</p>
-
-    <script>
-        function changeBg(type, value) {
-            if (type === 'image') {
-                document.body.style.backgroundImage = "url('" + value + "')";
-            } else {
-                document.body.style.backgroundImage = "none";
-                document.body.style.backgroundColor = value;
-            }
-        }
-    </script>
+    <a href="artist.html" class="brand-logo">onestacompany</a>
+    <div class="click-hint">CLICK TO DISCOVER</div>
 
 </body>
 </html>
