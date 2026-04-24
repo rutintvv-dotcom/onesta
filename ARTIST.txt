@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onesta Artist Identity</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Helvetica', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end; /* 하단 정렬 */
+            height: 110vh;
+            overflow: hidden; /* 스크롤 제거 */
+            transition: background 0.7s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* 하단 가독성을 위한 그라데이션 오버레이 */
+        .overlay {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            z-index: 0;
+        }
+
+        h2 { margin-bottom: 30px; font-weight: 200; letter-spacing: 5px; z-index: 1; text-align: center; font-size: 1.2rem; }
+
+        .palette-container {
+            display: flex;
+            gap: 15px;
+            z-index: 1;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* 모바일 대응 */
+            justify-content: center;
+        }
+
+        .pantone-chip {
+            width: 120px;
+            height: 180px;
+            background: #fff;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .pantone-chip:hover { transform: translateY(-15px) scale(1.05); }
+
+        .color-area { width: 100%; height: 75%; background-size: cover; background-position: center; }
+
+        /* 칩 내부 미리보기 이미지 */
+        .color-1 { background-image: url('kim.jpg'); 
+                    background-position: 50% 30%; 
+                    background-repeat: no-repeat;
+        }
+        .color-2 { background-image: url('yum.jpg'); }
+        .color-3 { background-image: url('in.jpg'); }
+        .color-4 { background-image: url('song.jpg'); }
+
+        .text-area { padding-top: 10px; color: #000; font-size: 10px; font-weight: bold; line-height: 1.2; }
+        .artist-name { font-size: 12px; margin-top: 3px; color: #333; }
+
+        address { margin-bottom: 30px; color: rgba(255,255,255,0.4); font-style: normal; font-size: 11px; z-index: 1; }
+
+        /* 모바일 최적화 */
+        @media (max-width: 600px) {
+            .pantone-chip { width: 80px; height: 130px; }
+            h2 { font-size: 0.9rem; letter-spacing: 2px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+    
+    <h2>ARTISTS WITH ONESTARCOMPANY</h2>
+
+    <div class="palette-container">
+        <div class="pantone-chip" onclick="changeBg('image', 'kim.jpg', 'center 20%')">
+            <div class="color-area color-1"></div>
+            <div class="text-area">Yong Bin Kim<br>8109-2991<div class="artist-name"></div></div>
+        </div>
+
+        <div class="pantone-chip" onclick="changeBg('image', 'yum.jpg', 'center 35%')">
+            <div class="color-area color-2"></div>
+            <div class="text-area">Yuri Yeom<br>9170-3991<div class="artist-name"></div></div>
+        </div>
+
+        <div class="pantone-chip" onclick="changeBg('image', 'in.jpg', 'center 30%')">
+            <div class="color-area color-3"></div>
+            <div class="text-area">In Hyeok Hwang<br> 5101-8991<div class="artist-name"></div></div>
+        </div>
+
+        <div class="pantone-chip" onclick="changeBg('image', 'song.jpg', 'center 35%')">
+            <div class="color-area color-4"></div>
+            <div class="text-area">Ja Young Song<br>9060-7991<div class="artist-name"></div></div>
+        </div>
+    </div>
+
+    <address>"24 Hakdong-ro 31-gil, Gangnam-gu, Seoul"</address>
+
+    <script>
+        function changeBg(type, value, pos = 'center') {
+            if (type === 'image') {
+                document.body.style.backgroundImage = "url('" + value + "')";
+                document.body.style.backgroundPosition = pos;
+            } else {
+                document.body.style.backgroundImage = "none";
+                document.body.style.backgroundColor = value;
+            }
+        }
+        
+        // 초기 배경 설정 (김용빈)
+        window.onload = () => changeBg('image', 'kim.jpg', 'center 30%');
+    </script>
+</body>
+</html>
