@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onesta Artist Showcase</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: 'Helvetica', sans-serif; overflow: hidden; }
+
+        /* 상단 로고 */
+        .header-logo {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            font-weight: 200;
+        }
+
+        /* 슬라이더 컨테이너 */
+        .main-slider {
+            display: flex;
+            width: 200vw; /* 아티스트 수에 맞춰 조정 */
+            height: 100vh;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .artist-section {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* 왼쪽 시각 영역 */
+        .left-visual {
+            flex: 1;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .artist-info {
+            position: absolute;
+            bottom: 80px;
+            left: 50px;
+            z-index: 10;
+        }
+
+        .artist-info h1 { font-size: 4rem; font-weight: 900; letter-spacing: -2px; }
+        .artist-info p { font-size: 1.2rem; color: #aaa; margin-top: 10px; }
+
+        /* 오른쪽 영상 영역 */
+        .right-content {
+            flex: 1.2;
+            height: 100%;
+            background: #111;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* 네비게이션 */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 50px;
+            z-index: 100;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover { background: #fff; color: #000; }
+    </style>
+</head>
+<body>
+
+    <div class="header-logo">ONESTACOMPANY</div>
+
+    <div class="main-slider" id="slider">
+        <section class="artist-section">
+            <div class="left-visual" style="background-image: url('kim.jpg');">
+                <div class="artist-info">
+                    <h1>YONG BIN KIM</h1>
+                    <p>Onesta Company Artist</p>
+                </div>
+            </div>
+            <div class="right-content">
+    <iframe 
+        src="https://www.youtube.com/watch?v=LHLXW4Ef7cU" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen>
+    </iframe>
+</div>
+        </section>
+
+        <section class="artist-section">
+            <div class="left-visual" style="background-image: url('yum.jpg');">
+                <div class="artist-info">
+                    <h1>YURI YEOM</h1>
+                    <p>Sophisticated Vocalist</p>
+                </div>
+            </div>
+            <div class="right-content">
+                <iframe 
+                    src="https://www.youtube.com/embed/LHLXW4Ef7cU?autoplay=0&mute=1&loop=1&playlist=LHLXW4Ef7cU" 
+                    allow="autoplay; encrypted-media" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="moveSlider(-1)">PREV</button>
+        <button class="nav-btn" onclick="moveSlider(1)">NEXT</button>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slider = document.getElementById('slider');
+        const totalArtists = 2; 
+
+        function moveSlider(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= totalArtists) currentIndex = totalArtists - 1;
+            
+            slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
+        }
+    </script>
+</body>
+</html>
